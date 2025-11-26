@@ -1,0 +1,26 @@
+Data/
+Saved Model/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environment
+.venv/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyTorch models (if any individual model files)
+*.pth
+*.pt
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
