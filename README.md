@@ -1,47 +1,80 @@
+# Skin Cancer Detection Using Deep Learning  
+**Early Detection Saves Lives**
+
+### Project Overview
+This repository contains a complete, ready-to-use skin cancer classification system built with **EfficientNet-B0** and the **HAM10000** dataset. The model classifies dermatoscopic images into **7 different skin lesion types** and includes **real-time Grad-CAM visualization** to show doctors exactly which parts of the lesion the AI focused on.
+
+The project includes:
+- A Jupyter notebook for inference & Grad-CAM testing (`skin_cancer_detection_lab.ipynb`)
+- A beautiful, shareable web demo using **Gradio** (`app.py`)
+- A clean, production-ready inference pipeline
+
 ---
-title: Skin Cancer Detection with Grad-CAM
-emoji: 🩺  # ← Fixed: real emoji, not text
-colorFrom: red
-colorTo: purple
-sdk: gradio
-sdk_version: 4.44.0
-app_file: app.py
-pinned: false
-license: mit
+
+### Why AI for Skin Cancer Detection?
+
+- Skin cancer is the **most common cancer** globally.
+- **Melanoma**, though only ~1% of cases, causes the majority of skin cancer deaths.
+- 5-year survival rate: **>99%** if detected early → **<25%** if metastasized.
+- Dermatologist-level visual assessment is time-consuming and not available everywhere.
+- AI can act as a **fast, reliable screening tool** to flag suspicious lesions for biopsy, reducing diagnostic delay and improving outcomes.
+
+This model helps bridge that gap by providing **instant, explainable predictions**.
+
 ---
 
-# Skin Cancer Detection with Real-time Grad-CAM
+### Dataset: HAM10000  
+("Human Against Machine with 10,000 training images")
 
-**EfficientNet-B0** trained from scratch on the **HAM10000** dataset  
-Detects **7 types of skin lesions** including **Melanoma** with **live attention heatmaps** (Grad-CAM)
+| Property              | Details                              |
+|-----------------------|--------------------------------------|
+| Total Images          | 10,015                               |
+| Classes               | 7                                    |
+| Resolution            | Variable (mostly 600×450)            |
+| Source                | ISIC Archive (Kaggle)                |
+| Classes               | `akiec`, `bcc`, `bkl`, `df`, `mel`, `nv`, `vasc` |
 
-### Classes Detected
-| Code  | Full Name                                | Description                                      | Risk Level     |
-|------|-------------------------------------------|----------------------------------------------------|----------------|
-| mel  | Melanoma                                  | Most dangerous form of skin cancer                 | HIGH           |
-| bcc  | Basal Cell Carcinoma                      | Most common skin cancer, rarely spreads           | Moderate       |
-| akiec| Actinic Keratoses / Bowen’s disease      | Pre-cancerous, can progress to SCC                 | Pre-cancerous  |
-| nv   | Melanocytic Nevi (moles)                  | Usually benign, but monitor changes                | Low            |
-| bkl  | Benign Keratosis                          | Non-cancerous growths (seborrheic keratosis etc.)  | Benign         |
-| df   | Dermatofibroma                            | Benign fibrous nodule                              | Benign         |
-| vasc | Vascular Lesions                          | Benign blood vessel growths                        | Benign         |
+**Class Distribution** (highly imbalanced – `nv` dominates ~67%)  
+Proper handling of class imbalance was applied during training.
 
-### Features
-- Real-time **Grad-CAM** visualization → see exactly where the model is looking  
-- Fast inference (works on CPU & GPU)  
-- No installation needed — just upload an image  
-- Trained on 10,015 dermatoscopic images (HAM10000)
+---
 
-### How to Use
-1. Upload a clear dermatoscopic (or high-quality close-up) image of a skin lesion  
-2. Wait ~2 seconds  
-3. Get instant prediction + heatmap showing the region of interest
+### Model Architecture
 
-**Important**: This is an AI research tool — **not a medical diagnosis**. Always consult a dermatologist.
+- **Base Model**: `EfficientNet-B0` (pre-trained on ImageNet)
+- **Input Size**: 224 × 224 × 3
+- **Final Layer**: Modified to output **7 classes**
+- **Framework**: PyTorch
+- **Saved Model**: `skin_cancer_model.pth` (full model + weights)
+- **Key Feature**: **Grad-CAM** integration for interpretability
 
-### Model Details
-- Architecture: EfficientNet-B0 (PyTorch + torchvision)  
-- Input size: 224×224  
-- Classes: 7  
-- Trained for 10+ epochs with data augmentation  
-- Uses ImageNet normalization
+The model achieves strong performance on the HAM10000 benchmark while remaining lightweight enough to run on standard laptops.
+
+---
+
+### How It Helps Doctors
+
+| Feature                  | Benefit to Clinicians                              |
+|--------------------------|-----------------------------------------------------|
+| Instant 7-class prediction | Rapid risk stratification                         |
+| Grad-CAM heatmaps         | Shows exactly where the model "looked"            |
+| Confidence scores         | Helps decide urgency of biopsy                    |
+| Web interface (Gradio)    | No installation needed – shareable link           |
+| Explainable AI            | Builds trust and supports clinical decision-making |
+
+Doctors can use this as a **second-opinion tool** during screening, especially in primary care or underserved regions.
+
+---
+
+### Quick Start
+
+```bash
+# 1. Clone repo
+git clone https://github.com/Nauman123-coder/skin-cancer-detection.git
+cd skin-cancer-detection
+
+# 2. Install dependencies
+pip install torch torchvision gradio opencv-python pillow numpy
+
+# 3. Run the web demo
+python app.py
